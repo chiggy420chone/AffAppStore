@@ -1,0 +1,2 @@
+# AffAppStore
+Affiliate Application Store
