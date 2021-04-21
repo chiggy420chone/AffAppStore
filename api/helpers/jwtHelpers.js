@@ -9,7 +9,8 @@ module.exports = {
       const payload = {
         iss:'AffStore Company',
 	sub:admin._id,
-	aud:admin
+	aud:admin,
+	iat:new Date().getTime()
       }
       const secret = AccessTokenSecret;
       const options = {

@@ -7,6 +7,7 @@ const app = express();
 
 //Set Routes
 const adminRoutes = require('./api/routes/admin');
+const userRoutes = require('./api/routes/users');
 const productRoutes = require('./api/routes/products');
 
 //Mongoose Connection
@@ -42,6 +43,7 @@ app.all('/test',(req,res,next)=>{
 
 //Routes
 app.use('/admin',adminRoutes);
+app.use('/users',userRoutes);
 app.use('/products',productRoutes);
 
 //Error Handling
