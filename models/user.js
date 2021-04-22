@@ -12,11 +12,23 @@ const userSchema = new mongoose.Schema({
   local:{
     email:{
       type:String,
-      lowercase:true,
-      unique:true
+      lowercase:true
     },
     password:{
       type:String
+    },
+    dateCreated:{
+      type:Date,
+      default:Date.now
+    }
+  },
+  google:{
+    id:{
+      type:String
+    },
+    email:{
+      type:String,
+      lowercase:true
     },
     dateCreated:{
       type:Date,
