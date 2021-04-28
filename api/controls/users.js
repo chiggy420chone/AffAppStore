@@ -48,18 +48,26 @@ module.exports = {
   
   },
   dashBoard:async (req,res,next) => {
-    res.status(200).json({
-      header:req.header['authorization'],
-      user:req.user,
-      message:'This is a protected users dashboard'
-    })
+    try{
+      res.status(200).json({
+        header:req.header['authorization'],
+        user:req.user,
+        message:'This is a protected users dashboard'
+      })
+    }catch(err){
+      next(err)
+    }
   },
-  GoogleOAuth:async (req,res,next) => {
-    const accessToken = await signAccessToken(req.user.id);
-    res.status(200).json({
-      accessToken,
-      user:req.user,
-      message:'Google Token Page'
-    })
+  GoogleOAuthToken:async (req,res,next) => {
+    try{
+      const accessToken = await signAccessToken(req.user.id);
+      res.status(200).json({
+        accessToken,
+        user:req.user,
+        message:'Google Token Page'
+      })
+    }catch(err){
+      next(err)
+    }
   }
 }

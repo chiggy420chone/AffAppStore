@@ -1,14 +1,21 @@
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
 const createError = require('http-errors');
-
+const sessionSecret = require('./configs/keys').SESSION_SECRET;
 const app = express();
 
+//Passport
+//require('./api/middlewares/passportConf')
 //Set Routes
+const indexRoutes = require('./api/routes/');
 const adminRoutes = require('./api/routes/admin');
 const userRoutes = require('./api/routes/users');
 const productRoutes = require('./api/routes/products');
+const oauthRoutes = require('./api/routes/oauth');
 
 //Mongoose Connection
 const MongooseConnection = require('./configs/init_mongoDb');
@@ -19,7 +26,14 @@ const RedisConnection = require('./configs/initRedis');
 app.use(logger('dev'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-
+app.use(cookieParser());
+app.use(session({
+    secret:'sessionSecret',
+    saveUninitialized:true,
+    resave:true,
+    cookie:{path:'/',httpOnly:true,secure:true,maxAge:60000}
+  })
+)
 //Static 
 app.use(express.static(path.join(__dirname,'./public/')));
 
@@ -35,6 +49,10 @@ app.use(function(req,res,next){
   }
 );
 
+//passport initialize & session
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Routes Testing
 app.all('/test',(req,res,next)=>{
   console.log(req.query)
@@ -42,10 +60,15 @@ app.all('/test',(req,res,next)=>{
 })
 
 //Routes
+app.use('/',indexRoutes)
 app.use('/admin',adminRoutes);
 app.use('/users',userRoutes);
 app.use('/products',productRoutes);
-
+app.use('/oauths',oauthRoutes);
+app.use('/logout',(req,res) => {
+  req.logout();
+  res.send("Logged Out")
+});
 //Error Handling
 app.use(async (req,res,next) => {
   next(createError.NotFound('Page Is Not Found'));
