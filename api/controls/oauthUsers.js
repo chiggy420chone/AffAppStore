@@ -13,7 +13,7 @@ module.exports = {
       next(err)
     }
   },
-  OAuthGoogleUser:async () => {
+  OAuthGoogleUser:async (req,res,next) => {
     try{
       console.log('Google OAuth User: ',req.user.google.email)
       res.status(200).json({

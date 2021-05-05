@@ -30,8 +30,8 @@ app.use(cookieParser());
 app.use(session({
     secret:'sessionSecret',
     saveUninitialized:true,
-    resave:true,
-    cookie:{path:'/',httpOnly:true,secure:true,maxAge:60000}
+    resave:true
+    //cookie:{path:'/',httpOnly:true,secure:true,maxAge:60000}
   })
 )
 //Static 
